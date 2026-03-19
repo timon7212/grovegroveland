@@ -12,6 +12,11 @@ import {
   staggerSlow,
   vp,
 } from "@/lib/motion";
+import { ParticleNetwork } from "@/components/v2/particle-network";
+import { DotWave } from "@/components/v2/dot-wave";
+import { AuroraBlobs } from "@/components/v2/aurora-blobs";
+import { GridPulse } from "@/components/v2/grid-pulse";
+import { FlowingLines } from "@/components/v2/flowing-lines";
 
 /* ── Design Tokens ─────────────────────────────────────── */
 
@@ -146,12 +151,15 @@ function HeroInner() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: T.bg }}
     >
+      {/* Particle Network Background */}
+      <ParticleNetwork className="absolute inset-0 z-0" />
+
       {/* Light ray 1 */}
       <div
-        className="absolute top-0 left-1/4 w-[600px] h-[900px] pointer-events-none"
+        className="absolute top-0 left-1/4 w-[600px] h-[900px] pointer-events-none z-[1]"
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,232,123,0.08) 0%, transparent 70%)",
+            "linear-gradient(180deg, rgba(0,232,123,0.1) 0%, transparent 70%)",
           transform: "rotate(-15deg) skewX(-10deg)",
           transformOrigin: "top center",
           filter: "blur(60px)",
@@ -159,10 +167,10 @@ function HeroInner() {
       />
       {/* Light ray 2 */}
       <div
-        className="absolute top-0 right-1/3 w-[400px] h-[800px] pointer-events-none"
+        className="absolute top-0 right-1/3 w-[400px] h-[800px] pointer-events-none z-[1]"
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,200,160,0.06) 0%, transparent 60%)",
+            "linear-gradient(180deg, rgba(0,200,160,0.08) 0%, transparent 60%)",
           transform: "rotate(12deg) skewX(8deg)",
           transformOrigin: "top center",
           filter: "blur(80px)",
@@ -170,17 +178,24 @@ function HeroInner() {
       />
       {/* Light ray 3 */}
       <div
-        className="absolute top-[-100px] left-[55%] w-[300px] h-[700px] pointer-events-none"
+        className="absolute top-[-100px] left-[55%] w-[300px] h-[700px] pointer-events-none z-[1]"
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,232,123,0.05) 0%, transparent 50%)",
+            "linear-gradient(180deg, rgba(0,232,123,0.06) 0%, transparent 50%)",
           transform: "rotate(25deg)",
           filter: "blur(50px)",
         }}
       />
+      {/* Top center glow */}
+      <div
+        className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full pointer-events-none z-[1]"
+        style={{
+          background: "radial-gradient(circle, rgba(0,232,123,0.08) 0%, transparent 70%)",
+        }}
+      />
       {/* Floor glow */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-[2px] pointer-events-none"
+        className="absolute bottom-0 left-0 right-0 h-[2px] pointer-events-none z-[1]"
         style={{
           background: `linear-gradient(90deg, transparent 5%, ${T.accent}33 30%, ${T.accent}66 50%, ${T.accent}33 70%, transparent 95%)`,
           boxShadow: `0 0 80px 20px ${T.accentGlow}`,
@@ -509,10 +524,11 @@ function FeaturesGrid() {
       initial="hidden"
       whileInView="show"
       viewport={vp}
-      className="relative z-10 py-24 md:py-32 px-6"
+      className="relative z-10 py-24 md:py-32 px-6 overflow-hidden"
       style={{ background: T.bg }}
     >
-      <div className="max-w-5xl mx-auto">
+      <GridPulse className="absolute inset-0 z-0 opacity-50" />
+      <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-[36px] md:text-[44px] font-bold text-white tracking-tight">
             Built for everyone.
@@ -586,9 +602,10 @@ function EarnSection() {
       whileInView="show"
       viewport={vp}
       variants={stagger}
-      className="px-6 py-24 md:py-32"
+      className="relative px-6 py-24 md:py-32 overflow-hidden"
     >
-      <div className="max-w-5xl mx-auto">
+      <AuroraBlobs />
+      <div className="max-w-5xl mx-auto relative z-10">
         <motion.div variants={fadeUp} className="text-center mb-16">
           <h2 className="text-[32px] sm:text-[40px] md:text-[48px] font-bold tracking-[-0.03em] text-white leading-tight">
             What early participants{" "}
@@ -655,9 +672,15 @@ function ScarcitySection() {
       whileInView="show"
       viewport={vp}
       variants={stagger}
-      className="px-6 py-24 md:py-32"
+      className="relative px-6 py-24 md:py-32 overflow-hidden"
     >
-      <div className="max-w-3xl mx-auto text-center">
+      <FlowingLines
+        className="absolute inset-0 z-0 opacity-60"
+        lineColor="rgba(0,232,123,0.15)"
+        lineCount={8}
+        speed={0.004}
+      />
+      <div className="max-w-3xl mx-auto text-center relative z-10">
         <motion.h2
           variants={fadeUp}
           className="text-[32px] sm:text-[40px] md:text-[48px] font-bold tracking-[-0.03em] text-white leading-tight"
@@ -836,7 +859,7 @@ function FinalCTA() {
               className="mt-8"
             >
               <button
-                onClick={() => document.getElementById("hero")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
                 className="px-8 py-3.5 rounded-full text-[15px] font-semibold transition-all hover:scale-105"
                 style={{ background: T.accent, color: "#000" }}
               >
@@ -907,6 +930,124 @@ function V2Footer() {
 
 /* ── Page Root ─────────────────────────────────────────── */
 
+function DotWaveDivider() {
+  return (
+    <div className="relative w-full h-[280px] overflow-hidden" style={{ background: T.bg }}>
+      <DotWave
+        className="absolute inset-0"
+        dotColor="rgba(0,232,123,0.3)"
+        dotSize={1.5}
+        gap={20}
+        amplitude={20}
+        speed={0.006}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `linear-gradient(180deg, ${T.bg} 0%, transparent 20%, transparent 80%, ${T.bg} 100%)`,
+        }}
+      />
+    </div>
+  );
+}
+
+function OrbitalVisual() {
+  return (
+    <div className="relative w-full overflow-hidden" style={{ background: T.bg }}>
+      <div className="max-w-5xl mx-auto py-24 px-6 flex flex-col items-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-[36px] sm:text-[44px] font-bold text-center tracking-tight text-white mb-4"
+        >
+          A living network
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-[16px] text-center max-w-md mb-16"
+          style={{ color: T.textSecondary }}
+        >
+          Every node strengthens the Grove. Watch the network grow in real time.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative w-[320px] h-[320px] sm:w-[420px] sm:h-[420px]"
+        >
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="absolute inset-0 rounded-full border"
+              style={{
+                borderColor: `rgba(0,232,123,${0.06 + i * 0.04})`,
+                transform: `rotateX(${60 + i * 10}deg) rotateZ(${i * 30}deg)`,
+                animation: `v2-orbit ${18 + i * 6}s linear infinite${i % 2 === 1 ? " reverse" : ""}`,
+              }}
+            />
+          ))}
+          {[0, 1, 2, 3, 4, 5].map((i) => {
+            const angle = (i / 6) * Math.PI * 2;
+            const rx = 120 + (i % 3) * 20;
+            const ry = 80 + (i % 2) * 30;
+            return (
+              <motion.div
+                key={i}
+                className="absolute rounded-full"
+                style={{
+                  width: 6 + (i % 3) * 2,
+                  height: 6 + (i % 3) * 2,
+                  background: i < 3 ? T.accent : "rgba(0,212,255,0.6)",
+                  boxShadow: `0 0 12px ${i < 3 ? T.accent : "rgba(0,212,255,0.4)"}`,
+                  left: "50%",
+                  top: "50%",
+                  marginLeft: -(3 + (i % 3)),
+                  marginTop: -(3 + (i % 3)),
+                }}
+                animate={{
+                  x: [Math.cos(angle) * rx, Math.cos(angle + Math.PI) * rx, Math.cos(angle) * rx],
+                  y: [Math.sin(angle) * ry, Math.sin(angle + Math.PI) * ry, Math.sin(angle) * ry],
+                  opacity: [0.5, 1, 0.5],
+                }}
+                transition={{
+                  duration: 10 + i * 2,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              />
+            );
+          })}
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full"
+            style={{
+              background: `radial-gradient(circle, ${T.accent}40 0%, transparent 70%)`,
+              boxShadow: `0 0 60px ${T.accent}30`,
+            }}
+          />
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full"
+            style={{ background: T.accent, boxShadow: `0 0 20px ${T.accent}` }}
+          />
+        </motion.div>
+      </div>
+
+      <style jsx>{`
+        @keyframes v2-orbit {
+          from { transform: rotateX(60deg) rotateZ(0deg); }
+          to { transform: rotateX(60deg) rotateZ(360deg); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export default function V2Page() {
   return (
     <GroveProvider>
@@ -914,8 +1055,11 @@ export default function V2Page() {
         <V2Navbar />
         <V2Hero />
         <StatsStrip />
+        <DotWaveDivider />
         <HowItWorks />
+        <OrbitalVisual />
         <FeaturesGrid />
+        <DotWaveDivider />
         <EarnSection />
         <ScarcitySection />
         <FAQSection />
